@@ -1,10 +1,29 @@
+/* ??????? ???? */
 body {
-  transition: background-color 0.3s, color 0.3s;
-  background-color: white;
-  color: black;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: #ffffff;
+    color: #000000;
+    font-family: sans-serif;
+    padding: 20px;
 }
 
-/* ????? ????? ?? ???? Connect Us */
+/* ?????? ???? ??? */
+.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+/* ???? ?? */
+#theme-toggle {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* ?????? ???? Connect Us */
 .small-ad-box {
     position: fixed !important;
     bottom: 20px !important;
