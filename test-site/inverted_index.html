@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>testing</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.ico">
+<style id="inverter-style">
+body {
+    filter: invert(1);
+}
+</style>
+</head>
+<body>
+    <h1>hello.</h1>
+    <p>im lookluck and its my test web.</p>
+    
+    <button id="theme-toggle">dark mode | light mode</button>
+
+    <!-- ???? "Connect Us" ?? ?????? ??? ?? ???? ??? body ???? ??? -->
+    <div class="small-ad-box">
+        <span>your AD here</span>
+        <a href="mailto:lookluck.ali111@gmail.com">lookluck.ali111@gmail.com</a>
+    </div>
+
+    <script>
+      const toggleButton = document.getElementById('theme-toggle');
+      const body = document.body;
+
+      const currentTheme = localStorage.getItem('theme');
+      if (currentTheme === 'dark') {
+        body.classList.add('dark-mode');
+      }
+
+      toggleButton.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        
+        if (body.classList.contains('dark-mode')) {
+          localStorage.setItem('theme', 'dark');
+        } else {
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    </script>
+</body>
+</html>
