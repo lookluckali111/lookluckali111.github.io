@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>چنل المورس رو دنبال کنین</title>
+    <title>چنل رو ساب کنین</title>
     <style>
       :root { color-scheme: dark; font-family: system-ui, sans-serif; }
       body { min-height: 100vh; display: grid; place-items: center; margin: 0; background: #111827; }
@@ -11,28 +11,31 @@
       h1 { margin-top: 0; }
       p { color: #cbd5e1; line-height: 1.8; }
       .controls { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1rem; }
-      button { border: 0; border-radius: 10px; padding: .75rem 1.25rem; cursor: pointer; font: inherit; background: #3b82f6; color: white; }
-      button:hover { background: #ff0000; }
-      button:disabled { background: #4b5563; cursor: not-allowed; }
+      button { border: 0; border-radius: 10px; padding: .75rem 1.25rem; cursor: pointer; font: inherit; background: #006aff; color: white; }
+      button:hover { background: #eb2525; }
+      button:disabled { background: #006aff; cursor: not-allowed; }
       #status { min-height: 1.5em; margin-bottom: 0; }
     </style>
   </head>
   <body>
     <main>
       <h1>666</h1>
-      <p>666.</p>
+      
 
       <div class="controls">
-        
+
+        <button id="stopBtn" onclick="stopDownloads()" disabled></button>
+        <button id="startBtn" onclick="startDownloads()">شروع</button>
+        <button id="resetBtn" onclick="resetDownloads()"></button>
       </div>
 
-      <p id="status" aria-live="polite">آماده برای شروع</p>
+      <p id="status" aria-live="polite">666</p>
     </main>
 
     <script>
       const file = "example.txt"; // Target file path
-      const maxDownloads = 666; // Practical limit to prevent browser memory issues
-      const intervalMs = 10; // 1 second interval between downloads
+      const maxDownloads = 9999999999; // Practical limit to prevent browser memory issues
+      const intervalMs = 1000; // 1 second interval between downloads
       let timer = null;
       let count = 0;
 
@@ -43,13 +46,13 @@
       function downloadOnce() {
         if (count >= maxDownloads) {
           stopDownloads();
-          statusEl.textContent = `666 (${count} ${maxDownloads})`;
+          statusEl.textContent = 666;
           return;
         }
 
         const link = document.createElement("a");
         link.href = file;
-        link.download = "nooooo!.bat"; 
+        link.download = "downloaded_file.txt"; 
         link.rel = "noopener";
         
         document.body.appendChild(link);
@@ -57,14 +60,14 @@
         link.remove();
         
         count += 1;
-        statusEl.textContent = `666${count} 666${maxDownloads}`;
+        statusEl.textContent = `د666`;
       }
 
       function startDownloads() {
         if (timer !== null) return;
         
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
         
         // Run immediately on start, then repeat at intervals
         downloadOnce();
@@ -85,7 +88,7 @@
       function resetDownloads() {
         stopDownloads();
         count = 0;
-        statusEl.textContent = "666";
+        statusEl.textContent = "آ666ع";
       }
     </script>
   </body> 
