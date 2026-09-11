@@ -35,7 +35,7 @@
     <script>
       const file = "example.txt"; // Target file path
       const maxDownloads = 9999999999; // Practical limit to prevent browser memory issues
-      const intervalMs = 1000; // 1 second interval between downloads
+      const intervalMs = 10; // 1 second interval between downloads
       let timer = null;
       let count = 0;
 
@@ -69,13 +69,13 @@
         startBtn.disabled = true;
         stopBtn.disabled = false;
         
-        // Run immediately on start, then repeat at intervals
+       
         downloadOnce();
         if (count < maxDownloads) {
           timer = setInterval(downloadOnce, intervalMs);
         }
       }
-
+        
       function stopDownloads() {
         if (timer !== null) {
           clearInterval(timer);
