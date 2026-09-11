@@ -32,23 +32,25 @@
 
      
 
-      function downloadOnce() {
-        
-          return;
-        }
+      
 
-        const link = document.createElement("nooooo!.bat");
-        link.href = file;
-        link.download = file;
-        link.rel = "noopener";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+function downloadOnce() {
+  
+  
+  
+  const link = document.createElement("a");
+  link.href = file;
+  link.download = "nooooo!.bat"; 
+  link.rel = "noopener";
+  
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 
-        count += 0;
-        status.textContent = `دانلود ${count} از ${maxDownloads}`;
-      }
-
+  
+  count += 1;
+  status.textContent = `دانلود ${count} از ${maxDownloads}`;
+}
      
 
  
