@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>خانه - Lookluck</title>
+    <style>
+        body { background-color: #1a1a1a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; flex-direction: column; }
+        .card { background: #2c2c2c; padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center; border: 1px solid #444; }
+        button { background-color: #00d4ff; border: none; padding: 15px 30px; margin: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; color: #1a1a1a; font-size: 16px; transition: 0.3s; width: 220px;}
+        button:hover { background-color: #0099bb; transform: scale(1.05); }
+        h1 { margin-top: 0; color: #00d4ff; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>به وب‌سایت Lookluck خوش آمدی</h1>
+        <p>یکی از محیط‌ها را انتخاب کن:</p>
+        
+        <!-- ورود مستقیم به سایت تست -->
+        <button onclick="window.location.href='test-site/index.html'">ورود به Test Site</button>
+        
+        <!-- ورود محافظت شده به سایت اصلی -->
+        <button onclick="checkAccess()">ورود به AlmorsXD</button>
+    </div>
+
+    <script>
+        function checkAccess() {
+            // لیست کاربران مجاز (اینجا را ویرایش کن)
+            const users = [
+                { user: "ali", pass: "12345" },
+                { user: "admin", pass: "admin678" }
+            ];
+
+            const inputUser = prompt("نام کاربری را وارد کن:");
+            const inputPass = prompt("رمز عبور را وارد کن:");
+
+            // بررسی صحت اطلاعات
+            const isValid = users.some(u => u.user === inputUser && u.pass === inputPass);
+
+            if (isValid) {
+                window.location.href = "almorsxd-site/index.html";
+            } else {
+                alert("نام کاربری یا رمز عبور اشتباه است!");
+            }
+        }
+    </script>
+</body>
+</html>
