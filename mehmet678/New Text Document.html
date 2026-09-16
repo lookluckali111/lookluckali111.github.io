@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>جستجوگر تصویر</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
+        input { padding: 10px; width: 250px; border-radius: 5px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; cursor: pointer; background: #6200ea; color: white; border: none; border-radius: 5px; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        #langBtn { background: #03dac6; color: black; font-weight: bold; margin-bottom: 20px; }
+        #result { margin-top: 30px; }
+        img { max-width: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+
+    <button id="langBtn" onclick="toggleLang()">English</button>
+
+    <h2 id="title">جستجوگر شناسنامه (۳ بار فرصت)</h2>
+    <p><span id="remainText">تعداد دفعات باقی‌مانده:</span> <span id="counter">3</span></p>
+
+    <input type="text" id="keyword" placeholder="کلمه را بنویس...">
+    <button id="searchBtn" onclick="showImage()">نمایش</button>
+
+    <div id="result"></div>
+
+    <script>
+        let attempts = 3;
+        let lang = "fa";
+
+        const texts = {
+            fa: {
+                title: "جستجوگر شناسنامه (۳ بار فرصت)",
+                remain: "تعداد دفعات باقی‌مانده:",
+                placeholder: "کلمه را بنویس...",
+                search: "نمایش",
+                notFound: "موردی یافت نشد.",
+                finished: "فرصت شما تمام شد.",
+                empty: "لطفاً یک اسم و فامیل وارد کنید!",
+                btnLang: "English"
+            },
+            en: {
+                title: "Image Searcher (3 attempts)",
+                remain: "Remaining attempts:",
+                placeholder: "Type a keyword...",
+                search: "Show",
+                notFound: "Nothing found.",
+                finished: "Your attempts are over.",
+                empty: "Please enter a word!",
+                btnLang: "فارسی"
+            }
+        };
+
+        const imageData = {
+            fa: {
+                "ارسلان آباذرسا": "arsalan.jpg",
+                "علی اکاتی دلیر": "123.png",
+                "امیر محمد جلالی نژاد": "111.png"
+            },
+            en: {
+                "arsalan abazarsa": "arsalan.jpg",
+                "ali okt dallir": "123.png",
+                "amir mohammad jalali": "111.png"
+            }
+        };
+
+        function toggleLang() {
+            lang = (lang === "fa") ? "en" : "fa";
+            const t = texts[lang];
+
+            document.getElementById("title").innerText = t.title;
+            document.getElementById("remainText").innerText = t.remain;
+            document.getElementById("searchBtn").innerText = t.search;
+            document.getElementById("langBtn").innerText = t.btnLang;
+            document.getElementById("keyword").placeholder = t.placeholder;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = (lang === "fa") ? "rtl" : "ltr";
+        }
+
+        function showImage() {
+            if (attempts > 0) {
+                const t = texts[lang];
+                const input = document.getElementById("keyword").value.trim();
+                const resultDiv = document.getElementById("result");
+
+                if (input === "") {
+                    resultDiv.innerHTML = `<p style="color:orange;">${t.empty}</p>`;
+                    return;
+                }
+
+                if (imageData[lang][input]) {
+                    resultDiv.innerHTML = `<img src="${imageData[lang][input]}" alt="${input}">`;
+                } else {
+                    resultDiv.innerHTML = `<p style="color:red;">${t.notFound}</p>`;
+                }
+
+                attempts--;
+                document.getElementById("counter").innerText = attempts;
+
+                if (attempts === 0) {
+                    document.getElementById("searchBtn").disabled = true;
+                    document.getElementById("keyword").disabled = true;
+                    resultDiv.innerHTML += `<p><strong>${t.finished}</strong></p>`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
