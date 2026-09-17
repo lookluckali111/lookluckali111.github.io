@@ -17,10 +17,10 @@
 
     <button id="langBtn" onclick="toggleLang()">English</button>
 
-    <h2 id="title">جستجوگر شناسنامه (۳ بار فرصت)</h2>
+    <h2 id="title">جستجوگر تصویر (۳ بار فرصت)</h2>
     <p><span id="remainText">تعداد دفعات باقی‌مانده:</span> <span id="counter">3</span></p>
 
-    <input type="text" id="keyword" placeholder="کلمه را بنویس...">
+    <input type="text" id="keyword" placeholder="نام را وارد کن...">
     <button id="searchBtn" onclick="showImage()">نمایش</button>
 
     <div id="result"></div>
@@ -31,37 +31,40 @@
 
         const texts = {
             fa: {
-                title: "جستجوگر شناسنامه (۳ بار فرصت)",
+                title: "جستجوگر تصویر (۳ بار فرصت)",
                 remain: "تعداد دفعات باقی‌مانده:",
-                placeholder: "کلمه را بنویس...",
+                placeholder: "نام را وارد کن...",
                 search: "نمایش",
                 notFound: "موردی یافت نشد.",
                 finished: "فرصت شما تمام شد.",
-                empty: "لطفاً یک اسم و فامیل وارد کنید!",
+                empty: "لطفاً یک نام وارد کن!",
                 btnLang: "English"
             },
             en: {
                 title: "Image Searcher (3 attempts)",
                 remain: "Remaining attempts:",
-                placeholder: "Type a keyword...",
+                placeholder: "Enter a name...",
                 search: "Show",
                 notFound: "Nothing found.",
                 finished: "Your attempts are over.",
-                empty: "Please enter a word!",
+                empty: "Please enter a name!",
                 btnLang: "فارسی"
             }
         };
 
+        // دقت کن: نام فایل‌ها دقیقاً با فایل‌های داخل RAR یکی است
         const imageData = {
             fa: {
-                "ارسلان آباذرسا": "arsalan.jpg",
-                "علی اکاتی دلیر": "123.png",
-                "امیر محمد جلالی نژاد": "111.png"
+                "علی": "ali.jpg",
+                "امیر": "amir.jpg",
+                "ارسلان": "arsalan.jpg",
+                "ارسلان گرگانی": "arsalangorgani.jpg"
             },
             en: {
-                "arsalan abazarsa": "arsalan.jpg",
-                "ali okt dallir": "123.png",
-                "amir mohammad jalali": "111.png"
+                "ali": "ali.jpg",
+                "amir": "amir.jpg",
+                "arsalan": "arsalan.jpg",
+                "arsalangorgani": "arsalangorgani.jpg"
             }
         };
 
