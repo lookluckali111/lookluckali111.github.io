@@ -1,0 +1,32 @@
+﻿<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>دوربین</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #000; }
+    video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  </style>
+</head>
+<body>
+  <video id="camera" autoplay playsinline muted></video>
+  <script>
+    const video = document.getElementById('camera');
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        video.srcObject = stream;
+      } catch (_) {
+        // The browser may require permission or a secure context before showing video.
+      }
+    }
+    startCamera();
+    window.addEventListener('pagehide', () => {
+      if (video.srcObject) video.srcObject.getTracks().forEach(track => track.stop());
+    });
+  </script>
+</body>
+</html>

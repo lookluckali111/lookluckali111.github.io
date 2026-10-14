@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10141e">
+  <title>ضبط صفحه</title>
+  <style>
+    :root{color-scheme:dark;--bg:#10141e;--panel:#191f2c;--muted:#9aa5b8;--text:#f5f7fb;--line:#2a3344;--accent:#8274ff;--red:#ff5c70;--green:#49d6a1}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -18%,#29284d 0,transparent 58%),var(--bg);color:var(--text);font-family:Tahoma,"Segoe UI",sans-serif;display:grid;place-items:center;padding:24px}
+    .app{width:min(100%,760px)}header{text-align:center;margin-bottom:28px} .logo{width:58px;height:58px;border-radius:19px;background:linear-gradient(145deg,#9a8dff,#6252ed);display:grid;place-items:center;margin:0 auto 16px;box-shadow:0 12px 35px #7567ff45}.logo svg{width:28px}h1{font-size:27px;margin:0 0 9px}header p{margin:0;color:var(--muted);font-size:14px;line-height:1.9}
+    .card{background:#191f2ceF;border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:0 24px 80px #0004}.preview{height:300px;border:1px solid #30394a;border-radius:15px;background:linear-gradient(145deg,#151a26,#121722);display:grid;place-items:center;overflow:hidden;position:relative}.preview video{width:100%;height:100%;object-fit:contain;display:none;background:#090b10}.empty{text-align:center;color:var(--muted)}.empty svg{width:52px;height:52px;color:#69758a;margin-bottom:9px}.empty div{font-size:14px}.live{position:absolute;top:14px;right:14px;display:none;align-items:center;gap:8px;background:#111824df;border:1px solid #3a4354;border-radius:99px;padding:7px 11px;font-size:12px}.live .dot{width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 1.4s infinite}.live.on{display:flex}@keyframes pulse{50%{opacity:.35}}
+    .controls{display:flex;align-items:center;justify-content:center;gap:12px;margin:22px 0 16px}.btn{border:0;border-radius:12px;padding:13px 20px;font:inherit;font-weight:700;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;justify-content:center;gap:9px}.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.08)}.btn:disabled{opacity:.42;cursor:not-allowed}.primary{background:var(--accent);color:white;min-width:190px}.stop{background:#402630;color:#ff9aaa;border:1px solid #75404c}.secondary{background:#252d3c;color:#dbe1ed;border:1px solid #3a4558}.btn svg{width:18px;height:18px}.timer{text-align:center;font-variant-numeric:tabular-nums;font-size:26px;letter-spacing:2px;font-weight:700;min-height:34px}.timer small{font-size:12px;letter-spacing:0;color:var(--muted);font-weight:400;margin-right:8px}.status{text-align:center;min-height:22px;color:var(--muted);font-size:13px;margin-top:8px}.status.error{color:#ff9aaa}.status.success{color:var(--green)}.options{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:19px;margin-top:20px;color:#cbd2df;font-size:13px}.check{display:flex;align-items:center;gap:8px;cursor:pointer}.check input{accent-color:var(--accent);width:16px;height:16px}.hint{font-size:12px;color:var(--muted);text-align:center;line-height:1.8;margin:18px 0 0}.download{display:none;margin:16px auto 0;text-decoration:none;width:max-content}.download.show{display:flex}.foot{text-align:center;color:#707b8e;font-size:11px;margin-top:18px}
+    @media(max-width:560px){body{padding:16px}.card{padding:16px}.preview{height:220px}.controls{flex-wrap:wrap}.primary{width:100%}.btn{padding:12px 15px}h1{font-size:23px}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z" fill="white" stroke="none"/></svg></div>
+      <h1>ضبط صفحه</h1>
+      <p>از صفحه، پنجره یا زبانهٔ مرورگرت ویدئو بگیر و با یک کلیک ذخیره‌اش کن.</p>
+    </header>
+    <section class="card" aria-label="ابزار ضبط صفحه">
+      <div class="preview">
+        <div class="empty" id="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4m-2-11 4 2-4 2z"/></svg><div>پیش‌نمایش ضبط اینجا نمایش داده می‌شود</div></div>
+        <video id="preview" autoplay muted playsinline></video>
+        <div class="live" id="live"><span class="dot"></span>در حال ضبط</div>
+      </div>
+      <div class="timer" id="timer">۰۰:۰۰<small id="timerNote">آمادهٔ ضبط</small></div>
+      <div class="controls">
+        <button class="btn primary" id="start"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="7"/></svg>شروع ضبط صفحه</button>
+        <button class="btn secondary" id="pause" disabled><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zm6 0h4v14h-4z"/></svg>مکث</button>
+        <button class="btn stop" id="stop" disabled><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>پایان ضبط</button>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite">برای انتخاب صفحه و شروع ضبط، روی دکمه بزن.</div>
+      <div class="options">
+        <label class="check"><input id="audio" type="checkbox" checked> ضبط صدای سیستم (در صورت پشتیبانی مرورگر)</label>
+        <label class="check"><input id="microphone" type="checkbox" checked> ضبط صدای میکروفون</label>
+      </div>
+      <a class="btn secondary download" id="download" download="screen-recording.webm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-5 5 5 5-5M4 17v3h16v-3"/></svg>دانلود ویدئو</a>
+      <p class="hint">پس از انتخاب صفحه، مرورگر برای میکروفون اجازه می‌گیرد. برای ضبط صدای زبانه یا سیستم، گزینهٔ اشتراک‌گذاری صدا را هم در پنجرهٔ انتخاب فعال کن.</p>
+    </section>
+    <div class="foot">ضبط در مرورگر انجام می‌شود؛ فایل فقط با فشردن «دانلود ویدئو» ذخیره خواهد شد.</div>
+  </main>
+  <script>
+    (()=>{
+      const $=id=>document.getElementById(id), startBtn=$('start'), pauseBtn=$('pause'), stopBtn=$('stop'), preview=$('preview'), empty=$('empty'), live=$('live'), timer=$('timer'), timerNote=$('timerNote'), status=$('status'), download=$('download');
+      let stream=null, recorder=null, micStream=null, audioContext=null, sourceAudioTracks=[], chunks=[], elapsed=0, tick=null, url=null, finalized=false;
+      const fmt=n=>{const m=Math.floor(n/60),s=n%60;return [m,s].map(v=>String(v).padStart(2,'0')).join(':').replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d])};
+      function setStatus(msg,type=''){status.textContent=msg;status.className='status '+type}
+      function clearClock(){clearInterval(tick);tick=null}
+      function cleanupMedia(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null}sourceAudioTracks.forEach(t=>t.stop());sourceAudioTracks=[];if(audioContext){audioContext.close().catch(()=>{});audioContext=null}}
+      function release(){cleanupMedia();preview.srcObject=null;preview.style.display='none';empty.style.display='block';empty.lastElementChild.textContent='پیش‌نمایش ضبط اینجا نمایش داده می‌شود';live.classList.remove('on')}
+      function finish(){clearClock();pauseBtn.disabled=true;stopBtn.disabled=true;startBtn.disabled=false;timerNote.textContent='ضبط تمام شد';live.classList.remove('on');cleanupMedia();preview.srcObject=null;preview.style.display='none';empty.style.display='block';empty.lastElementChild.textContent='پیش‌نمایش ضبط اینجا نمایش داده می‌شود'}
+      startBtn.addEventListener('click',async()=>{
+        if(!navigator.mediaDevices?.getDisplayMedia){setStatus('این مرورگر امکان ضبط صفحه را ندارد. صفحه را در Chrome، Edge یا Firefox باز کن.','error');return}
+        startBtn.disabled=true;download.classList.remove('show');if(url){URL.revokeObjectURL(url);url=null}
+        try{
+          stream=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:$('audio').checked});
+          if($('microphone').checked){
+            try{micStream=await navigator.mediaDevices.getUserMedia({audio:true,video:false})}catch(e){throw new Error('اجازهٔ میکروفون داده نشد یا میکروفون در دسترس نیست: '+(e.message||e.name))}
+            const audioTracks=[...stream.getAudioTracks(),...micStream.getAudioTracks()];
+            if(audioTracks.length>1){audioContext=new AudioContext();await audioContext.resume();const destination=audioContext.createMediaStreamDestination();audioTracks.forEach(track=>{audioContext.createMediaStreamSource(new MediaStream([track])).connect(destination)});audioTracks.forEach(track=>{stream.removeTrack(track);sourceAudioTracks.push(track)});stream.addTrack(destination.stream.getAudioTracks()[0])}
+            else micStream.getAudioTracks().forEach(track=>stream.addTrack(track));
+          }
+          const hasAudio=stream.getAudioTracks().length>0;
+          const candidates=hasAudio?['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm']:['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
+          const mime=candidates.find(t=>MediaRecorder.isTypeSupported(t));
+          recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined);chunks=[];elapsed=0;finalized=false;timer.textContent=fmt(0);timer.append(timerNote);timerNote.textContent='در حال ضبط';preview.srcObject=null;preview.style.display='none';empty.style.display='block';empty.lastElementChild.textContent='ضبط در حال انجام است؛ برای جلوگیری از کندی، پیش‌نمایش زنده خاموش است.';live.classList.add('on');
+          recorder.ondataavailable=e=>{if(e.data?.size)chunks.push(e.data)};
+          recorder.onerror=e=>{setStatus('خطا هنگام ساخت فایل ضبط: '+(e.error?.message||'ضبط متوقف شد.'),'error');finish()};
+          recorder.onstop=()=>{clearTimeout(stopFallback);if(finalized)return;finalized=true;if(chunks.length){const blob=new Blob(chunks,{type:recorder.mimeType||'video/webm'});url=URL.createObjectURL(blob);download.href=url;download.download=`screen-recording-${new Date().toISOString().replace(/[:.]/g,'-')}.webm`;download.classList.add('show');setStatus(`ویدئو آمادهٔ دانلود است (${Math.round(blob.size/1024)} کیلوبایت).`,'success')}else setStatus('داده‌ای از ضبط دریافت نشد؛ یک‌بار دیگر ضبط کن و صفحه یا پنجرهٔ دیگری را برای ضبط انتخاب کن.','error');finish()};
+          stream.getVideoTracks()[0].addEventListener('ended',()=>{if(recorder&&recorder.state!=='inactive')recorder.stop()},{once:true});
+          recorder.start(1000);pauseBtn.disabled=false;stopBtn.disabled=false;setStatus('ضبط شروع شد. برای پایان، روی «پایان ضبط» بزن.');tick=setInterval(()=>{if(recorder?.state==='recording'){elapsed++;timer.textContent=fmt(elapsed);timer.append(timerNote)}},1000)
+        }catch(e){release();startBtn.disabled=false;if(e.name==='NotAllowedError')setStatus('انتخاب صفحه لغو شد یا اجازهٔ ضبط داده نشد.','error');else setStatus('شروع ضبط ممکن نشد: '+(e.message||e.name),'error')}
+      });
+      pauseBtn.addEventListener('click',()=>{if(!recorder)return;if(recorder.state==='recording'){recorder.pause();pauseBtn.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 12 7-12 7z"/></svg>ادامه';timerNote.textContent='مکث';setStatus('ضبط مکث شده است.')}else if(recorder.state==='paused'){recorder.resume();pauseBtn.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zm6 0h4v14h-4z"/></svg>مکث';timerNote.textContent='در حال ضبط';setStatus('ضبط ادامه پیدا کرد.')}});
+      let stopFallback=null;
+      stopBtn.addEventListener('click',()=>{if(!recorder||recorder.state==='inactive')return;stopBtn.disabled=true;pauseBtn.disabled=true;timerNote.textContent='در حال آماده‌سازی فایل…';setStatus('در حال آماده‌سازی فایل ضبط…');stopFallback=setTimeout(()=>{if(finalized||download.classList.contains('show'))return;if(chunks.length){finalized=true;const blob=new Blob(chunks,{type:recorder.mimeType||'video/webm'});url=URL.createObjectURL(blob);download.href=url;download.download='screen-recording.webm';download.classList.add('show');setStatus('فایل ضبط تا این لحظه آمادهٔ دانلود است.','success');finish()}else{setStatus('مرورگر هنوز دادهٔ ویدئو تحویل نداده است. چند ثانیه دیگر صبر کن یا صفحه را دوباره بارگذاری و ضبط را تکرار کن.','error');stopBtn.disabled=false}},15000);try{if(recorder.state==='paused')recorder.resume();if(recorder.state==='recording')recorder.requestData();setTimeout(()=>{try{if(recorder&&recorder.state!=='inactive')recorder.stop()}catch(e){setStatus('توقف ضبط ناموفق بود: '+(e.message||e.name),'error')}},250)}catch(e){clearTimeout(stopFallback);setStatus('توقف ضبط ناموفق بود: '+(e.message||e.name),'error');stopBtn.disabled=false}});
+      window.addEventListener('beforeunload',()=>{if(url)URL.revokeObjectURL(url);cleanupMedia()});
+    })();
+  </script>
+</body>
+</html>

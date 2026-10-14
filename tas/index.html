@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تاس شانسی</title>
+<style>
+:root{color-scheme:dark;--ink:#f5f3ff;--muted:#b8b2d3;--accent:#c4b5fd;--card:rgba(255,255,255,.09)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;overflow:hidden;font-family:Tahoma,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(ellipse at 50% 20%,#382566 0,#1b1732 45%,#10111e 100%)}
+body:before,body:after{content:"";position:fixed;width:300px;height:300px;border-radius:50%;filter:blur(90px);opacity:.25;pointer-events:none}body:before{background:#8b5cf6;top:-100px;right:-70px}body:after{background:#ec4899;bottom:-120px;left:-70px}
+main{width:min(92vw,470px);padding:38px 30px 30px;text-align:center;background:var(--card);border:1px solid rgba(255,255,255,.14);border-radius:28px;box-shadow:0 24px 80px #09091488;backdrop-filter:blur(18px)}
+h1{font-size:clamp(1.7rem,6vw,2.2rem);margin:0 0 8px;letter-spacing:-1px}.sub{color:var(--muted);font-size:.95rem;margin:0 0 34px}
+.die-wrap{perspective:800px;height:190px;display:grid;place-items:center;margin:0 auto 25px}.die{--size:132px;width:var(--size);height:var(--size);position:relative;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 18px 18px #05040c77)}
+.face{position:absolute;inset:0;border-radius:24px;background:linear-gradient(145deg,#fff,#ddd8f4);border:1px solid #fff;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:17px;gap:8px;backface-visibility:hidden;box-shadow:inset -8px -8px 18px #b5aed5aa,inset 6px 6px 15px #fff}
+.pip{width:17px;height:17px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#57418a,#211831 75%);align-self:center;justify-self:center;box-shadow:inset 1px 2px 3px #ffffff55,0 1px 2px #fff}
+.f1{transform:translateZ(66px)}.f6{transform:rotateY(180deg) translateZ(66px)}.f2{transform:rotateY(90deg) translateZ(66px)}.f5{transform:rotateY(-90deg) translateZ(66px)}.f3{transform:rotateX(90deg) translateZ(66px)}.f4{transform:rotateX(-90deg) translateZ(66px)}
+/* Pip positions use explicit grid cells. */
+.f1 .pip:nth-child(1){grid-area:2/2}.f2 .pip:nth-child(1){grid-area:1/1}.f2 .pip:nth-child(2){grid-area:3/3}.f3 .pip:nth-child(1){grid-area:1/1}.f3 .pip:nth-child(2){grid-area:2/2}.f3 .pip:nth-child(3){grid-area:3/3}.f4 .pip:nth-child(1){grid-area:1/1}.f4 .pip:nth-child(2){grid-area:1/3}.f4 .pip:nth-child(3){grid-area:3/1}.f4 .pip:nth-child(4){grid-area:3/3}.f5 .pip:nth-child(1){grid-area:1/1}.f5 .pip:nth-child(2){grid-area:1/3}.f5 .pip:nth-child(3){grid-area:2/2}.f5 .pip:nth-child(4){grid-area:3/1}.f5 .pip:nth-child(5){grid-area:3/3}.f6 .pip:nth-child(1){grid-area:1/1}.f6 .pip:nth-child(2){grid-area:2/1}.f6 .pip:nth-child(3){grid-area:3/1}.f6 .pip:nth-child(4){grid-area:1/3}.f6 .pip:nth-child(5){grid-area:2/3}.f6 .pip:nth-child(6){grid-area:3/3}
+.result{height:28px;color:var(--accent);font-weight:bold;margin-bottom:18px}.roll{border:0;border-radius:14px;padding:14px 30px;font:700 1rem Tahoma,sans-serif;color:#211735;background:linear-gradient(135deg,#ddd6fe,#a78bfa);box-shadow:0 8px 24px #8b5cf644;cursor:pointer;transition:transform .15s,filter .15s}.roll:hover{filter:brightness(1.08);transform:translateY(-2px)}.roll:active{transform:translateY(1px)}.hint{font-size:.78rem;color:#9690b1;margin:17px 0 0}
+@keyframes shake{0%{transform:rotateX(0) rotateY(0)}25%{transform:rotateX(120deg) rotateY(90deg)}50%{transform:rotateX(240deg) rotateY(210deg)}75%{transform:rotateX(380deg) rotateY(330deg)}100%{transform:rotateX(var(--rx)) rotateY(var(--ry))}}
+.rolling{animation:shake .7s ease-out}
+@media(max-width:420px){main{padding:30px 20px}.die-wrap{height:170px}}
+</style>
+</head>
+<body>
+<main>
+<h1>تاس شانسی</h1><p class="sub">ساخته شده توست LOOK LUCK</p>
+<div class="die-wrap"><div class="die" id="die" aria-label="تاس"></div></div>
+<div class="result" id="result" aria-live="polite">آماده‌ای؟</div>
+<button class="roll" id="roll">🎲 انداختن تاس</button>
+<p class="hint"></p>سپیسو بزنُ
+</main>
+<script>
+const die=document.getElementById('die'),result=document.getElementById('result'),button=document.getElementById('roll');
+const faces={1:[2],2:[1,9],3:[1,5,9],4:[1,3,7,9],5:[1,3,5,7,9],6:[1,4,7,3,6,9]};
+for(let n=1;n<=6;n++){const face=document.createElement('div');face.className='face f'+n;for(const pos of faces[n]){const pip=document.createElement('i');pip.className='pip';pip.style.gridArea=`${Math.ceil(pos/3)}/${(pos-1)%3+1}`;face.append(pip)}die.append(face)}
+const rotations={1:[0,0],2:[0,-90],3:[-90,0],4:[90,0],5:[0,90],6:[0,180]};let busy=false;
+function roll(){if(busy)return;busy=true;button.disabled=true;result.textContent='تاس داره می‌چرخه…';const n=Math.floor(Math.random()*6)+1,[x,y]=rotations[n];die.style.setProperty('--rx',`${x+720}deg`);die.style.setProperty('--ry',`${y+720}deg`);die.classList.remove('rolling');void die.offsetWidth;die.classList.add('rolling');setTimeout(()=>{die.classList.remove('rolling');die.style.transform=`rotateX(${x}deg) rotateY(${y}deg)`;result.textContent=`عدد تاس: ${n}`;busy=false;button.disabled=false},720)}
+button.addEventListener('click',roll);document.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.repeat){e.preventDefault();roll()}});
+</script>
+</body>
+</html>

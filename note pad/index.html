@@ -1,0 +1,27 @@
+﻿<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نوت‌پد من</title>
+<style>
+:root{color-scheme:light;--ink:#202536;--muted:#7c8498;--line:#e8eaf1;--accent:#6558d9;--paper:#fff;--bg:#f5f6fb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,"Segoe UI",sans-serif;min-height:100vh}.app{max-width:980px;margin:48px auto;padding:0 22px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:13px}.icon{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:#eceaff;color:var(--accent);font-size:24px}.brand h1{font-size:21px;margin:0 0 5px}.brand p{font-size:12px;color:var(--muted);margin:0}.actions{display:flex;gap:9px;align-items:center}button{font:inherit;cursor:pointer;border:1px solid var(--line);background:white;color:var(--ink);border-radius:10px;padding:10px 14px;transition:.15s}button:hover{transform:translateY(-1px);border-color:#c9c5f5}.primary{background:var(--accent);border-color:var(--accent);color:white}.primary:hover{background:#5548cb}.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 35px #252b4510;overflow:hidden}.title{width:100%;border:0;border-bottom:1px solid var(--line);outline:0;padding:23px 26px;font:600 20px Tahoma,sans-serif;color:var(--ink)}.editor{width:100%;height:55vh;min-height:300px;resize:vertical;border:0;outline:0;padding:24px 26px;font:15px/2 Tahoma,sans-serif;color:var(--ink)}.footer{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.status{display:flex;align-items:center;gap:7px}.dot{width:8px;height:8px;border-radius:50%;background:#48b782}.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);opacity:0;background:#25283a;color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}@media(max-width:600px){.app{margin:24px auto}.top{align-items:flex-start;flex-direction:column}.actions{width:100%}.actions button{flex:1}.editor{height:50vh}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top"><div class="brand"><div class="icon">✎</div><div><h1>نوت‌پد من</h1><p>یادداشت‌هایت را ساده و سریع بنویس</p></div></div><div class="actions"><button id="newBtn">یادداشت تازه</button><button id="copyBtn">کپی متن</button><button class="primary" id="saveBtn">ذخیره فایل</button></div></header>
+<section class="card"><input class="title" id="title" placeholder="عنوان یادداشت…" aria-label="عنوان یادداشت"><textarea class="editor" id="body" placeholder="از اینجا شروع به نوشتن کن…" aria-label="متن یادداشت"></textarea><footer class="footer"><span class="status"><i class="dot"></i><span id="status">ذخیره خودکار روشن است</span></span><span id="count">۰ واژه · ۰ نویسه</span></footer></section>
+</main><div class="toast" id="toast"></div>
+<script>
+const titleEl=document.querySelector('#title'),bodyEl=document.querySelector('#body'),statusEl=document.querySelector('#status'),countEl=document.querySelector('#count'),toastEl=document.querySelector('#toast');let timer;
+const key='persian-notepad-v1';function load(){try{const d=JSON.parse(localStorage.getItem(key)||'{}');titleEl.value=d.title||'';bodyEl.value=d.body||''}catch{}}
+function digits(n){return String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d])}function update(){const text=bodyEl.value.trim();countEl.textContent=`${digits(text?text.split(/\s+/).length:0)} واژه · ${digits(bodyEl.value.length)} نویسه`;statusEl.textContent='در حال ذخیره…';clearTimeout(timer);timer=setTimeout(()=>{localStorage.setItem(key,JSON.stringify({title:titleEl.value,body:bodyEl.value}));statusEl.textContent='ذخیره خودکار روشن است'},350)}
+titleEl.addEventListener('input',update);bodyEl.addEventListener('input',update);load();update();
+function toast(msg){toastEl.textContent=msg;toastEl.classList.add('show');setTimeout(()=>toastEl.classList.remove('show'),1800)}
+document.querySelector('#newBtn').onclick=()=>{if((titleEl.value||bodyEl.value)&&!confirm('یادداشت فعلی پاک شود و یادداشت تازه‌ای بسازیم؟'))return;titleEl.value='';bodyEl.value='';update();bodyEl.focus()};
+document.querySelector('#copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(bodyEl.value);toast('متن کپی شد')}catch{bodyEl.select();document.execCommand('copy');toast('متن کپی شد')}};
+document.querySelector('#saveBtn').onclick=()=>{const text=(titleEl.value?titleEl.value+'\n\n':'')+bodyEl.value;const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(titleEl.value||'یادداشت')+'.txt';a.click();URL.revokeObjectURL(a.href);toast('فایل متنی دانلود شد')};
+</script>
+</body></html>
